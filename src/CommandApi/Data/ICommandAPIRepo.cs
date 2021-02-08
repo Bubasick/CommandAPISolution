@@ -6,7 +6,7 @@ using CommandAPI.Models;
 
 namespace CommandAPI.Data
 {
-    interface ICommandAPIRepo
+    public interface ICommandAPIRepo
     {
         bool SaveChanges();
         IEnumerable<Command> GetAllCommands();
