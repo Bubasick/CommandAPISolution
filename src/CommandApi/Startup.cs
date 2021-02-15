@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandAPI.Data;
+using Npgsql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,10 +26,13 @@ namespace CommandApi
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            var builder = new NpgsqlConnectionStringBuilder();
+            builder.ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection");
+            builder.Username = Configuration["UserID"];
+            builder.Password = Configuration["Password"];
             services.AddControllers();
             services.AddScoped<ICommandAPIRepo, SqlCommandApiRepo>();
-            services.AddDbContext<CommandContext>(opt => opt.UseNpgsql
-                (Configuration.GetConnectionString("PostgreSqlConnection")));
+            services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(builder.ConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
