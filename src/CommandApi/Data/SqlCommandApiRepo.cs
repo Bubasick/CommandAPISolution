@@ -52,6 +52,5 @@ namespace CommandAPI.Data
         public void UpdateCommand(Command cmd)
         {
         }
-      
     }
 }

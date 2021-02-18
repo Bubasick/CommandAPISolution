@@ -2,10 +2,9 @@
 using CommandAPI.Data;
 using CommandAPI.DTO;
 using CommandAPI.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
 
 namespace CommandAPI.Controllers
 {
@@ -65,6 +64,7 @@ namespace CommandAPI.Controllers
             _repository.SaveChanges();
             return NoContent();
         }
+
         [HttpPatch("{id}")]
         public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDTO> patchDoc)
         {
