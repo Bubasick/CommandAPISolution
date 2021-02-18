@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace CommandAPI.Tests
@@ -8,7 +7,6 @@ namespace CommandAPI.Tests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
