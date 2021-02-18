@@ -34,6 +34,7 @@ namespace CommandAPI.Data
             };
             return commands;
         }
+
         public Command GetCommandById(int id)
         {
             return new Command
@@ -44,7 +45,8 @@ namespace CommandAPI.Data
                 Platform = ".Net Core EF"
             };
         }
-            public bool SaveChanges()
+
+        public bool SaveChanges()
         {
             throw new System.NotImplementedException();
         }

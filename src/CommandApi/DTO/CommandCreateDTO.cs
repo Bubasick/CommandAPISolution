@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CommandAPI.Models
+namespace CommandAPI.DTO
 {
-    public class Command
+    public class CommandCreateDTO
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(250)]
-        public string HowTo { get; set; }
+        public string Howto { get; set; }
 
         [Required]
         public string Platform { get; set; }

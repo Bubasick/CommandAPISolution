@@ -1,8 +1,6 @@
-﻿using CommandAPI.DTO;
-using CommandAPI.Data;
-using AutoMapper;
+﻿using AutoMapper;
+using CommandAPI.DTO;
 using CommandAPI.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace CommandApi.Profiles
 {
@@ -11,7 +9,9 @@ namespace CommandApi.Profiles
         public CommandsProfile()
         {
             CreateMap<Command, CommandReadDTO>();
+            CreateMap<CommandCreateDTO, Command>();
+            CreateMap<CommandUpdateDTO, Command>();
+            CreateMap<Command, CommandUpdateDTO>();
         }
-        
     }
 }
