@@ -6,7 +6,7 @@ namespace CommandAPI.DTO
     {
         [Required]
         [MaxLength(250)]
-        public string Howto { get; set; }
+        public string HowTo { get; set; }
 
         [Required]
         public string Platform { get; set; }
