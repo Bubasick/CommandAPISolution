@@ -1,12 +1,12 @@
-﻿using System;
-using CommandAPI.Models;
+﻿using CommandAPI.Models;
+using System;
 using Xunit;
 
 namespace CommandAPI.Tests
 {
-    public class CommandTests :IDisposable
+    public class CommandTests : IDisposable
     {
-        Command testCommand;
+        private Command testCommand;
 
         public CommandTests()
         {
@@ -26,10 +26,9 @@ namespace CommandAPI.Tests
         [Fact]
         public void CanChangeHowTo()
         {
-
             //Act
             testCommand.HowTo = "Execute unit tests";
-            
+
             //Assert
             Assert.Equal("Execute unit tests", testCommand.HowTo);
         }
@@ -37,7 +36,6 @@ namespace CommandAPI.Tests
         [Fact]
         public void CanChangePlatform()
         {
-
             //Act
             testCommand.Platform = "XUnit";
 
@@ -49,7 +47,7 @@ namespace CommandAPI.Tests
         public void CanChangeCommandLine()
         {
             //Act
-            testCommand.CommandLine= "dotnet test";
+            testCommand.CommandLine = "dotnet test";
 
             //Assert
             Assert.Equal("dotnet test", testCommand.CommandLine);
