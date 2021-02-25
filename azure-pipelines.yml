@@ -11,12 +11,14 @@ steps:
 - task: UseDotNet@2
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
     testRunTitle: 'XUnit Test Run'
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
   inputs:
@@ -24,6 +26,7 @@ steps:
     publishWebProjects: false
     projects: 'src/CommandAPI/*.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
 
