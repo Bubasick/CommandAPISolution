@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using CommandApi.Profiles;
 using CommandAPI.Controllers;
 using CommandAPI.Data;
 using CommandAPI.DTO;
 using CommandAPI.Models;
-using CommandApi.Profiles;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace CommandAPI.Tests
 {
     public class CommandsControllerTests : IDisposable
     {
-        Mock<ICommandAPIRepo> mockRepo;
-        CommandsProfile realProfile;
-        MapperConfiguration configuration;
-        IMapper mapper;
+        private Mock<ICommandAPIRepo> mockRepo;
+        private CommandsProfile realProfile;
+        private MapperConfiguration configuration;
+        private IMapper mapper;
+
         public CommandsControllerTests()
         {
             mockRepo = new Mock<ICommandAPIRepo>();
@@ -34,18 +35,20 @@ namespace CommandAPI.Tests
             configuration = null;
             mapper = null;
         }
+
         [Fact]
         public void GetAllCommands_Returns200OK_WhenDBIsEmpty()
         {
             //Arrange
             mockRepo.Setup(repo =>
                 repo.GetAllCommands()).Returns(GetCommands(0));
-            var controller = new CommandsController(mockRepo.Object,mapper);
+            var controller = new CommandsController(mockRepo.Object, mapper);
             //Act
             var result = controller.GetAllCommands();
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
         }
+
         [Fact]
         public void GetAllCommands_ReturnsOneItem_WhenDBHasOneResource()
         {
@@ -66,12 +69,13 @@ namespace CommandAPI.Tests
         {
             //Arrange
             mockRepo.Setup(repo => repo.GetAllCommands()).Returns(GetCommands(1));
-            var controller = new CommandsController(mockRepo.Object,mapper);
+            var controller = new CommandsController(mockRepo.Object, mapper);
             //Act
             var result = controller.GetAllCommands();
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
         }
+
         [Fact]
         public void GetAllCommands_ReturnsCorrectType_WhenDBHasOneResource()
         {
@@ -101,10 +105,11 @@ namespace CommandAPI.Tests
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
         }
+
         [Fact]
         public void GetCommandById_Returns404NotFound_WhenNonExistentIdProvided()
         {
-            //Arrange   
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => null);
             var controller = new CommandsController(mockRepo.Object, mapper);
             //Act
@@ -112,10 +117,11 @@ namespace CommandAPI.Tests
             //Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
+
         [Fact]
         public void GetCommandByID_ReturnsCommandReadDTO_WhenValidIDProvided()
-        {   
-            //Arrange       
+        {
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => null);
             var controller = new CommandsController(mockRepo.Object, mapper);
             //Act
@@ -127,7 +133,7 @@ namespace CommandAPI.Tests
         [Fact]
         public void CreateCommand_ReturnsCorrectResourceType_WhenValidObjectSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.CreateCommand(new Command
             {
                 Id = 0,
@@ -136,15 +142,16 @@ namespace CommandAPI.Tests
                 Platform = ".Net Core EF"
             }));
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.CreateCommand(new CommandCreateDTO());
             //Assert
             Assert.IsType<ActionResult<CommandReadDTO>>(result);
         }
+
         [Fact]
         public void CreateCommand_Returns201Created_WhenValidObjectSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.CreateCommand(new Command
             {
                 Id = 0,
@@ -153,15 +160,16 @@ namespace CommandAPI.Tests
                 Platform = ".Net Core EF"
             }));
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.CreateCommand(new CommandCreateDTO());
             //Assert
             Assert.IsType<CreatedAtRouteResult>(result.Result);
         }
+
         [Fact]
         public void UpdateCommand_Returns204NoContent_WhenValidObjectSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(new Command
             {
                 Id = 0,
@@ -170,37 +178,40 @@ namespace CommandAPI.Tests
                 Platform = ".Net Core EF"
             });
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
-            var result = controller.UpdateCommand(0,new CommandUpdateDTO());
+            //Act
+            var result = controller.UpdateCommand(0, new CommandUpdateDTO());
             //Assert
             Assert.IsType<NoContentResult>(result);
         }
+
         [Fact]
         public void UpdateCommand_Returns404NotFound_WhenNonExistentResourceIDSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => null);
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.UpdateCommand(0, new CommandUpdateDTO());
             //Assert
             Assert.IsType<NotFoundResult>(result);
         }
+
         [Fact]
         public void PartialCommandUpdate_Returns404NotFound_WhenNonExistentResourceIDSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => null);
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.PartialCommandUpdate(0, new JsonPatchDocument<CommandUpdateDTO>());
             //Assert
             Assert.IsType<NotFoundResult>(result);
         }
+
         [Fact]
         public void DeleteCommand_Returns204NoContent_WhenValidResourceIDSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => new Command
             {
                 Id = 0,
@@ -209,7 +220,7 @@ namespace CommandAPI.Tests
                 Platform = ".Net Core EF"
             });
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.DeleteCommand(0);
             //Assert
             Assert.IsType<NoContentResult>(result);
@@ -218,10 +229,10 @@ namespace CommandAPI.Tests
         [Fact]
         public void DeleteCommand_Returns_404NotFound_WhenNonExistentResourceIDSubmitted()
         {
-            //Arrange       
+            //Arrange
             mockRepo.Setup(repo => repo.GetCommandById(0)).Returns(() => null);
             var controller = new CommandsController(mockRepo.Object, mapper);
-            //Act   
+            //Act
             var result = controller.DeleteCommand(0);
             //Assert
             Assert.IsType<NotFoundResult>(result);
@@ -230,7 +241,7 @@ namespace CommandAPI.Tests
         private List<Command> GetCommands(int num)
         {
             var commands = new List<Command>();
-            if(num > 0 ) commands.Add( new Command
+            if (num > 0) commands.Add(new Command
             {
                 Id = 0,
                 HowTo = "How to generate a migration",
