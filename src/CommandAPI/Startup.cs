@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json.Serialization;
 using Npgsql;
 using System;
@@ -30,6 +31,12 @@ namespace CommandApi
             builder.Password = Configuration["Password"];
 
             services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(builder.ConnectionString));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.Audience = Configuration["ResourceId"];
+                    opt.Authority = $"{Configuration["Instance"]}{Configuration["TenantId"]}";
+                });
 
             services.AddControllers().AddNewtonsoftJson(s =>
             {
@@ -51,6 +58,10 @@ namespace CommandApi
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
